@@ -73,25 +73,61 @@ def detect_similar_monthly_variations(time_series, years):
     if years[0]+1 != years[1]:
         raise ExamException("Anni forniti non consecutivi")
 
-    year0 = []
-    year1 = []
+    listyear0 = []
+    listyear1 = []
 
     for item in time_series:
-        app = (item[0].split('-'))[0]
 
-        if int(app) == years[0]:
-            year0.append(item)
+        year_app = int((item[0].split('-'))[0])
+        day_app = int((item[0].split('-'))[1])
+        num_app = int(item[1])
 
-        if int(app) == years[1]:
-            year1.append(item)
-    diffYear0 = []
-    diffYear1 = []
+        if int(year_app) == years[0]:
+            listyear0.append([year_app,day_app,num_app])
 
-    '''
-    for i in range(len(year0)-1):
-        if (item[0].split('-'))[1]
-    '''
+        if int(year_app) == years[1]:
+            listyear1.append([year_app, day_app, num_app])
     
+    diff_list0 = []
+    diff_list1 = []
+
+    i = 0
+    j = 1
+
+    while i < 11:
+
+        if listyear0[i][1] == j and (listyear0[i][1])+1 == listyear0[i+1][1]:
+            print("uguali")
+        else:
+            print('Diversi')
+
+        j += 1
+
+    '''
+    while i < 10:
+
+        print("************")
+        print('Corrente:', listyear0[i][1], 'i+1:', i+1)
+        print('Successivo:', listyear0[i+1][1], 'i+2:', i+2)
+
+        if listyear0[i][1] == i+1 and listyear0[i+1][1] == i+2:
+
+            print("Uguale")
+            i += 1
+
+        else:
+            print('diverso')
+    '''
+    for item in diff_list0:
+        #print(item)
+        pass
+
+    #print('Lunghezza:',len(diff_list0))
+
+
+
+
+
 #==============================
 #  Main
 #==============================
