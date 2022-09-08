@@ -92,39 +92,41 @@ def detect_similar_monthly_variations(time_series, years):
     diff_list1 = []
 
     i = 0
-    j = 1
+    j = 0
 
-    while i < 11:
-
-        if listyear0[i][1] == j and (listyear0[i][1])+1 == listyear0[i+1][1]:
-            print("uguali")
-        else:
-            print('Diversi')
-
-        j += 1
-
-    '''
     while i < 10:
 
-        print("************")
-        print('Corrente:', listyear0[i][1], 'i+1:', i+1)
-        print('Successivo:', listyear0[i+1][1], 'i+2:', i+2)
+        #print(" ")
+        #print('i:', i)
+        #print('mese corr:', ((listyear0[i][1])), '- mese succ:', listyear0[i+1][1] )
+        #print('pass corr:', ((listyear0[i][2])), '- pass succ:', listyear0[i+1][2] )
 
-        if listyear0[i][1] == i+1 and listyear0[i+1][1] == i+2:
+        if (listyear0[i][1])+1 == (listyear0[i+1][1]):
+            #print('Consecutivo')
 
-            print("Uguale")
+            app = abs((listyear0[i][2]) -  listyear0[i+1][2])
+
+            diff_list0.append(app)
             i += 1
 
         else:
-            print('diverso')
-    '''
+            #print(" ")
+            #print('Non consecutivo')   
+            j = (listyear0[i][1])
+
+            while j != (listyear0[i+1][1]):
+                #print("j:", j, '- mese targhet', listyear0[i+1][1])
+                #print('Append None')
+                diff_list0.append(None)
+                j += 1
+
+            i += 1
+
+    print('Lunghezza', len(diff_list0)) 
+
     for item in diff_list0:
-        #print(item)
+        print(item)
         pass
-
-    #print('Lunghezza:',len(diff_list0))
-
-
 
 
 
