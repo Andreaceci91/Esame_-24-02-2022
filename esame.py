@@ -52,9 +52,22 @@ class CSVTimeSeriesFile:
 
         # Controllo che non sono presenti TimeStamp duplicati o non ordinati altrimenti alzo eccezione
         for i in range(len(data)-1):
+
+            data_app_corr = data[i][0].split('-')
+            anno_corr = int(data_app_corr[0])
+            mese_corr = int(data_app_corr[1])
+
+            data_app_succ = data[i+1][0].split('-')
+            anno_succ = int(data_app_succ[0])
+            mese_succ = int(data_app_succ[1])
             
-            if data[i][0] >= data[i+1][0]:
+            #print("i:",data_app_corr,"- i+1", data_app_succ)
+
+            if anno_corr > anno_succ:
                 raise ExamException("TimeStamp non ordinato o duplicato")
+            else:
+                if anno_corr == anno_succ and mese_corr >= mese_succ:
+                    raise ExamException("TimeStamp non ordinato o duplicato")
 
         # Ritorno la lista 
         return data
@@ -64,6 +77,15 @@ def detect_similar_monthly_variations(time_series, years):
     
     # Credo una lista vuota di appoggio
     list_app = []
+
+    # converto a intero anni forniti in caso fossero passati come stringhe
+    for i in range(len(years)):
+        years[i] = int(years[i])
+    
+    if (years[0])+1 != years[1]:
+        raise ExamException("Anni forniti non consecutivi")
+
+    
 
     # Splitto elementi presenti nella time_series sul carattere "-"
     for item in time_series:
@@ -79,10 +101,6 @@ def detect_similar_monthly_variations(time_series, years):
     for item in years:
         if item not in list_app:
             raise ExamException("Anno cercato non presente nel dataset")
-
-    # Controllo che gli anni forniti dall'utente siano consecutivi
-    if years[0]+1 != years[1]:
-        raise ExamException("Anni forniti non consecutivi")
 
     # Istanzio due liste vuote per inserire i valori degli anni richiesti dall'utente
     listyear0 = []
@@ -252,6 +270,27 @@ def detect_similar_monthly_variations(time_series, years):
     #for item in diff_list1:
     #    print(item)
 
+    # Controllo differenza valori dalle liste di differenza precedemente calcolate
+    result = []
+
+    for i in range(len(diff_list0)):
+
+        print(diff_list0[i], '-', diff_list1[i])
+
+        if diff_list0[i] == None or diff_list1[i] == None:
+            #print('appendo false')
+            result.append(False)
+        else:
+
+            #print('ABS:', abs(diff_list0[i] - diff_list1[i]))
+            if abs(diff_list0[i] - diff_list1[i]) <= 2:
+                result.append(True)
+            else:
+                result.append(False)
+    
+    print(" ")
+    for item in result:
+        print(item)
 
 #==============================
 #  Main
@@ -261,7 +300,7 @@ file = CSVTimeSeriesFile('/Users/andrea/Desktop/Esame_24_02_2022/data.csv')
 
 df = file.get_data()
 
-#for item in df:
-#    print(item)
+for item in df:
+    print(item)
 
-detect_similar_monthly_variations(df,[1949,1950])
+#detect_similar_monthly_variations(df,['1949','1950'])
